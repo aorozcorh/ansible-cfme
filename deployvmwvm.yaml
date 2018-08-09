@@ -1,13 +1,19 @@
 ---
-# Deploy a guest from a template
-- vsphere_guest:
-    vcenter_hostname: vcenter.hpemx.lab
-    username: danny@hpemx.lab
-    password: HPE1nvent
-    guest: newvm001
-    from_template: yes
-    template_src: centosTemplate
-    cluster: MainCluster
-    resource_pool: "/Resources"
-    vm_extra_config:
-      folder: MyFolder
+- name: Create a VM from a template
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+  - name: Clone the template
+    vmware_guest:
+      hostname: vcenter.hpemx.lab
+      username: danny@hpemx.lab
+      password: HPE1nvent
+      validate_certs: False
+      name: testvm_2
+      template: rhel7template
+      datacenter: Datacenter
+      folder: /
+      state: poweredon
+      wait_for_ip_address: yes
+
